@@ -1,5 +1,6 @@
 package guru.springframework.domain;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -17,13 +18,18 @@ public class Recipe {
     private Integer servings;
     private String source;
     private String url;
+
+    @Lob
     private String directions;
-    
-    @Enumerated(value = EnumType.STRING)
-    private Difficulty difficulty;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
+    private Set<Ingredient> ingredients = new HashSet<>();
 
     @Lob
     private Byte[] image;
+    
+    @Enumerated(value = EnumType.STRING)
+    private Difficulty difficulty;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Notes notes;
@@ -35,6 +41,7 @@ public class Recipe {
     private Set<Category> categories;
     
 
+    
     public Long getId() {
         return id;
     }
@@ -129,5 +136,13 @@ public class Recipe {
 
     public void setCategories(Set<Category> categories) {
         this.categories = categories;
+    }
+
+    public Set<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(Set<Ingredient> ingredients) {
+        this.ingredients = ingredients;
     }
 }
